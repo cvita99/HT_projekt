@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title><%= title %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/homesite.css">
+</head>
+
+<body>
+    <div class="header1">
+        <div class="text1">
+            <p>PRIVATNI</p>
+            <p>POSLOVNI</p>
+            <p>HT GRUPA</p>
+            <p>ZAPOŠLJAVAMO</p>
+        </div>
+        <div class="text2">
+            <p>PODRŠKA</p>
+            <p>MOJ TELEKOM</p>
+        </div>
+    </div>
+
+    <div class="header2">
+        <img src="/photos/T.png">
+        <p>ADD SHIPMENT</p>
+
+    </div>
+    <h1>Shipment Tracking Form</h1>
+    <% if(error) {%>
+        <p id="error">Postoji već neki shipment s tim Id-om, pokušajte ponovno!</p>
+    <%}%>
+    <button id="popuniFormu">Popuni formu</button>
+    <form id="shipmentForm" action="/shipments/add" method="post" >
+        <fieldset>
+            <legend>Shipment Information</legend>
+
+            <label for="id">Shipment ID:</label>
+            <input type="text" id="id" name="id" required><br><br>
+
+            <label for="carrier">Carrier:</label>
+            <input type="text" id="carrier" name="carrier" required><br><br>
+
+            <label for="trackingCode">Tracking Code:</label>
+            <input type="text" id="trackingCode" name="trackingCode" required><br><br>
+
+            <label for="carrierTrackingUrl">Carrier Tracking URL:</label>
+            <input type="url" id="carrierTrackingUrl" name="carrierTrackingUrl" required><br><br>
+
+            <label for="trackingDate">Tracking Date:</label>
+            <input type="date" id="trackingDate" name="trackingDate" required><br><br>
+
+            <label for="status">Status:</label>
+            <select name="status" required>
+                <option value="initialized" selected>initialized</option>
+                <option value="inProcess">inProcess</option>
+                <option value="processed">processed</option>
+                <option value="shipped">shipped</option>
+                <option value="inCustoms">inCustoms</option>
+                <option value="delivered">delivered</option>
+                <option value="returned">returned</option>
+                <option value="error">error</option>
+            </select>
+            <br><br>
+
+            <label for="statusChangeDate">Status Change Date:</label>
+            <input type="date" id="statusChangeDate" name="statusChangeDate" ><br><br>
+
+            <label for="statusChangeReason">Status Change Reason:</label>
+            <input type="text" id="statusChangeReason" name="statusChangeReason"><br><br>
+
+            <label for="weight">Weight:</label>
+            <input type="number" id="weight" name="weight" step="0.01" required><br><br>
+
+            <label for="estimatedDeliveryDate">Estimated Delivery Date:</label>
+            <input type="date" id="estimatedDeliveryDate" name="estimatedDeliveryDate" required><br><br>
+
+            <fieldset>
+                <legend>Address From</legend>
+                <label for="addressFromId">ID:</label>
+                <input type="text" id="addressFromId" name="addressFromId" required><br><br>
+                <label for="streetNrFrom">Street Number:</label>
+                <input type="text" id="streetNrFrom" name="streetNrFrom" required><br><br>
+                <label for="streetNameFrom">Street Name:</label>
+                <input type="text" id="streetNameFrom" name="streetNameFrom" required><br><br>
+                <label for="streetSuffixFrom">Street Suffix:</label>
+                <input type="text" id="streetSuffixFrom" name="streetSuffixFrom"><br><br>
+                <label for="postcodeFrom">Postcode:</label>
+                <input type="text" id="postcodeFrom" name="postcodeFrom" required><br><br>
+                <label for="cityFrom">City:</label>
+                <input type="text" id="cityFrom" name="cityFrom" required><br><br>
+                <label for="countryFrom">Country:</label>
+                <input type="text" id="countryFrom" name="countryFrom" required><br><br>
+            </fieldset>
+
+            <fieldset>
+                <legend>Address To</legend>
+                <label for="addressToId">ID:</label>
+                <input type="text" id="addressToId" name="addressToId" required><br><br>
+                <label for="streetNrTo">Street Number:</label>
+                <input type="text" id="streetNrTo" name="streetNrTo" required><br><br>
+                <label for="streetNameTo">Street Name:</label>
+                <input type="text" id="streetNameTo" name="streetNameTo" required><br><br>
+                <label for="streetSuffixTo">Street Suffix:</label>
+                <input type="text" id="streetSuffixTo" name="streetSuffixTo"><br><br>
+                <label for="postcodeTo">Postcode:</label>
+                <input type="text" id="postcodeTo" name="postcodeTo" required><br><br>
+                <label for="cityTo">City:</label>
+                <input type="text" id="cityTo" name="cityTo" required><br><br>
+                <label for="countryTo">Country:</label>
+                <input type="text" id="countryTo" name="countryTo" required><br><br>
+            </fieldset>
+
+            <fieldset>
+                <legend>Order Reference</legend>
+                <label for="orderId">ID:</label>
+                <input type="text" id="orderId" name="orderId" required><br><br>
+                <label for="orderHref">Href:</label>
+                <input type="url" id="orderHref" name="orderHref" required><br><br>
+                <label for="orderName">Name:</label>
+                <input type="text" id="orderName" name="orderName" required><br><br>
+                <label for="orderReferredType">Referred Type:</label>
+                <input type="text" id="orderReferredType" name="orderReferredType" required><br><br>
+            </fieldset>
+
+            <fieldset>
+                <legend>Customer Reference</legend>
+                <label for="customerId">ID:</label>
+                <input type="text" id="customerId" name="customerId" required><br><br>
+                <label for="customerHref">Href:</label>
+                <input type="url" id="customerHref" name="customerHref" required><br><br>
+                <label for="customerName">Name:</label>
+                <input type="text" id="customerName" name="customerName" required><br><br>
+                <label for="customerDescription">Description:</label>
+                <input type="text" id="customerDescription" name="customerDescription" required><br><br>
+            </fieldset>
+
+            <button type="submit">Submit</button>
+        </fieldset>
+    </form>
+
+</body>
+
+<script>
+    document.getElementById('popuniFormu').addEventListener('click', function() {
+    // Puni podacima
+    document.getElementById('id').value = '12345';
+    document.getElementById('carrier').value = 'DHL';
+    document.getElementById('trackingCode').value = 'ABC123';
+    document.getElementById('carrierTrackingUrl').value = 'https://www.dhl.com';
+
+    document.getElementById('trackingDate').value = '2024-05-31'; 
+   
+    document.getElementById('statusChangeDate').value = '2024-05-30';
+    document.getElementById('statusChangeReason').value = 'Package sorted for delivery';
+    document.getElementById('weight').value = '2.5';  
+    document.getElementById('estimatedDeliveryDate').value = '2024-06-05';
+    document.getElementById('addressFromId').value = '21';
+    document.getElementById('streetNrFrom').value = '123';
+    document.getElementById('streetNameFrom').value = 'Drage Gervaisa';
+    document.getElementById('streetSuffixFrom').value = 'ulica';
+    document.getElementById('postcodeFrom').value = '10001';
+    document.getElementById('cityFrom').value = 'Zagreb';
+    document.getElementById('countryFrom').value = 'Hrvatska';
+    document.getElementById('addressToId').value = '22';
+    document.getElementById('streetNrTo').value = '456';
+    document.getElementById('streetNameTo').value = 'Broadway';
+    document.getElementById('streetSuffixTo').value = 'Ave';
+    document.getElementById('postcodeTo').value = '20001';
+    document.getElementById('cityTo').value = 'Washington';
+    document.getElementById('countryTo').value = 'USA';
+    document.getElementById('orderId').value = '98765';
+    document.getElementById('orderHref').value = 'https://www.example.com/orders/98765';
+    document.getElementById('orderName').value = 'Example Order';
+    document.getElementById('orderReferredType').value = 'Online';
+    document.getElementById('customerId').value = '25';
+    document.getElementById('customerHref').value = 'https://www.example.com/customers/54321';
+    document.getElementById('customerName').value = 'Sara Lapic';
+    document.getElementById('customerDescription').value = 'Regular customer';
+});
+
+</script>
+
+</html>

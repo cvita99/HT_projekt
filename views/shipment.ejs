@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title><%= title %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/homesite.css">
+</head>
+
+<body>
+    <div class="header1">
+        <div class="text1">
+            <p>PRIVATNI</p>
+            <p>POSLOVNI</p>
+            <p>HT GRUPA</p>
+            <p>ZAPOŠLJAVAMO</p>
+        </div>
+        <div class="text2">
+            <p>PODRŠKA</p>
+            <p>MOJ TELEKOM</p>
+        </div>
+    </div>
+
+    <div class="header2">
+        <img src="/photos/T.png">
+        <p>UPDATE SHIPMENT</p>
+
+    </div>
+    <h1>Shipment Tracking Form</h1>
+    <form id="shipmentForm" action="/shipments/<%= shipment.id %>" method="post" >
+        <fieldset>
+            <legend>Shipment Information</legend>
+
+            <label for="id">Shipment ID: </label>
+            <input type="text" id="id" name="id" value="<%= shipment.id %>" readonly><br><br>
+
+            <label for="carrier">Carrier:</label>
+            <input type="text" id="carrier" name="carrier" value="<%= shipment.carrier %>" required><br><br>
+
+            <label for="trackingCode">Tracking Code:</label>
+            <input type="text" id="trackingCode" name="trackingCode" value="<%= shipment.trackingCode %>" required><br><br>
+
+            <label for="carrierTrackingUrl">Carrier Tracking URL:</label>
+            <input type="url" id="carrierTrackingUrl" name="carrierTrackingUrl" value="<%= shipment.carrierTrackingUrl %>" required><br><br>
+
+            <label for="trackingDate">Tracking Date:</label>
+            <input type="date" id="trackingDate" name="trackingDate" value="<%=shipment.trackingDate%>" required><br><br>
+
+            <label for="status">Status:</label>
+            <select name="status" value="<%= shipment.status %>" required>
+                <option value="initialized" <%= shipment.status == 'initialized' ? 'selected' : '' %>>initialized</option>
+                <option value="inProcess" <%= shipment.status == 'inProcess' ? 'selected' : '' %>>inProcess</option>
+                <option value="processed" <%= shipment.status == 'processed' ? 'selected' : '' %>>processed</option>
+                <option value="shipped" <%= shipment.status == 'shipped' ? 'selected' : '' %>>shipped</option>
+                <option value="inCustoms" <%= shipment.status == 'inCustoms' ? 'selected' : '' %>>inCustoms</option>
+                <option value="delivered" <%= shipment.status == 'delivered' ? 'selected' : '' %>>delivered</option>
+                <option value="returned" <%= shipment.status == 'returned' ? 'selected' : '' %>>returned</option>
+                <option value="error" <%= shipment.status == 'error' ? 'selected' : '' %>>error</option>
+            </select>
+            <br><br>
+
+            <label for="statusChangeDate">Status Change Date:</label>
+            <input type="date" id="statusChangeDate" name="statusChangeDate" value="<%= shipment.statusChangeDate %>" required><br><br>
+
+            <label for="statusChangeReason">Status Change Reason:</label>
+            <input type="text" id="statusChangeReason" name="statusChangeReason" value="<%= shipment.statusChangeReason %>" required><br><br>
+
+            <label for="weight">Weight:</label>
+            <input type="number" id="weight" name="weight" step="0.01" value="<%=parseInt(shipment.weight) %>" required><br><br>
+
+            <label for="estimatedDeliveryDate">Estimated Delivery Date:</label>
+            <input type="date" id="estimatedDeliveryDate" name="estimatedDeliveryDate" value="<%= shipment.estimatedDeliveryDate %>" required><br><br>
+
+            <fieldset>
+                <legend>Address From</legend>
+                <label for="addressFromId">ID:</label>
+                <input type="text" id="addressFromId" name="addressFromId"  value="<%= shipment.addressFrom.id %>" required><br><br>
+                <label for="streetNrFrom">Street Number:</label>
+                <input type="text" id="streetNrFrom" name="streetNrFrom" value="<%= shipment.addressFrom.streetNr %>" required><br><br>
+                <label for="streetNameFrom">Street Name:</label>
+                <input type="text" id="streetNameFrom" name="streetNameFrom" value="<%= shipment.addressFrom.streetName %>" required><br><br>
+                <label for="streetSuffixFrom">Street Suffix:</label>
+                <input type="text" id="streetSuffixFrom" name="streetSuffixFrom" value="<%= shipment.addressFrom.streetSuffix %>" required><br><br>
+                <label for="postcodeFrom">Postcode:</label>
+                <input type="text" id="postcodeFrom" name="postcodeFrom" value="<%= shipment.addressFrom.postcode %>" required><br><br>
+                <label for="cityFrom">City:</label>
+                <input type="text" id="cityFrom" name="cityFrom" value="<%= shipment.addressFrom.city %>" required><br><br>
+                <label for="countryFrom">Country:</label>
+                <input type="text" id="countryFrom" name="countryFrom" value="<%= shipment.addressFrom.country %>" required><br><br>
+            </fieldset>
+
+            <fieldset>
+                <legend>Address To</legend>
+                <label for="addressToId">ID:</label>
+                <input type="text" id="addressToId" name="addressToId"  value="<%= shipment.addressFrom.id %>" required><br><br>
+                <label for="streetNrTo">Street Number:</label>
+                <input type="text" id="streetNrTo" name="streetNrTo" value="<%= shipment.addressFrom.streetNr %>" required><br><br>
+                <label for="streetNameTo">Street Name:</label>
+                <input type="text" id="streetNameTo" name="streetNameTo" value="<%= shipment.addressFrom.streetName %>" required><br><br>
+                <label for="streetSuffixTo">Street Suffix:</label>
+                <input type="text" id="streetSuffixTo" name="streetSuffixTo" value="<%= shipment.addressFrom.streetSuffix %>" required><br><br>
+                <label for="postcodeTo">Postcode:</label>
+                <input type="text" id="postcodeTo" name="postcodeTo" value="<%= shipment.addressFrom.postcode %>" required><br><br>
+                <label for="cityTo">City:</label>
+                <input type="text" id="cityTo" name="cityTo" value="<%= shipment.addressFrom.city %>" required><br><br>
+                <label for="countryTo">Country:</label>
+                <input type="text" id="countryTo" name="countryTo" value="<%= shipment.addressFrom.country %>" required><br><br>
+            </fieldset>
+
+            <fieldset>
+                <legend>Order Reference</legend>
+                <label for="orderId">ID:</label>
+                <input type="text" id="orderId" value="<%= shipment.order.id %>" name="orderId"><br><br>
+                <label for="orderHref">Href:</label>
+                <input type="url" id="orderHref" name="orderHref" value="<%= shipment.order.href %>"><br><br>
+                <label for="orderName">Name:</label>
+                <input type="text" id="orderName" name="orderName" value="<%= shipment.order.name %>"><br><br>
+                <label for="orderReferredType">Referred Type:</label>
+                <input type="text" id="orderReferredType" name="orderReferredType" value="<%= shipment.order.referredType %>"><br><br>
+            </fieldset>
+
+            <fieldset>
+                <legend>Customer Reference</legend>
+                <label for="customerId">ID:</label>
+                <input type="text" id="customerId" name="customerId" value="<%= shipment.relatedCustomer.id %>" required><br><br>
+                <label for="customerHref">Href:</label>
+                <input type="url" id="customerHref" name="customerHref" value="<%= shipment.relatedCustomer.href %>" required><br><br>
+                <label for="customerName">Name:</label>
+                <input type="text" id="customerName" name="customerName" value="<%= shipment.relatedCustomer.name %>" required><br><br>
+                <label for="customerDescription">Description:</label>
+                <input type="text" id="customerDescription" name="customerDescription" value="<%= shipment.relatedCustomer.description %>" required><br><br>
+            </fieldset>
+
+            <button type="submit">Submit</button>
+        </fieldset>
+    </form>
+
+</body>
+
+</html>

@@ -1,0 +1,381 @@
+---
+swagger: "2.0"
+info:
+  description: "Shipment Tracking Management provides operations to track shipments."
+  version: "1.14.0"
+  title: "Shipment Tracking API"
+host: "localhost:8017"
+basePath: "/shipmentTracking/v1"
+tags:
+- name: "Shipment Tracking"
+  description: "API over Shipment Tracking domain"
+schemes:
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+security:
+- accessToken: []
+- apiKey: []
+paths:
+  /shipmentTracking:
+    get:
+      tags:
+      - "Shipment Tracking"
+      summary: "Retrieve tracking details of a shipment"
+      operationId: "getShipmentTracking"
+      consumes: []
+      parameters:
+      - name: "customerId"
+        in: "query"
+        description: "To retrieve the shipments tracking from a specific customer"
+        required: false
+        type: "string"
+      - name: "status"
+        in: "query"
+        description: "Status of shipment"
+        required: false
+        type: "string"
+      - name: "orderId"
+        in: "query"
+        description: "Id of the order whose shipment has to be fetched"
+        required: false
+        type: "string"
+      - name: "page"
+        in: "query"
+        description: "page, positive integer, starts with 0"
+        required: false
+        type: "string"
+      - name: "size"
+        in: "query"
+        description: "page size, positive integer greater than 0"
+        required: false
+        type: "string"
+      - name: "sort"
+        in: "query"
+        description: "data sort parameter, starts with '+' or '-' prefix; when prefix\
+          \ empty, '+' is default; multiple attributes can be used separated by ','"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          headers:
+            X-Content-Range:
+              type: "string"
+              description: "returns paging info in format {page}/{limit}/{results}|*"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ShipmentTracking"
+        400:
+          description: "Bad format request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Not authenticated"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      tags:
+      - "Shipment Tracking"
+      summary: "creates new ShipmentTracking"
+      operationId: "postShipmentTracking"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "The ShipmentTracking to be created"
+        required: true
+        schema:
+          $ref: "#/definitions/ShipmentTracking"
+      responses:
+        201:
+          description: "ShipmentTracking created successfully"
+          schema:
+            $ref: "#/definitions/ShipmentTracking"
+        400:
+          description: "Bad format request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Not authenticated"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/Error"
+  /shipmentTracking/{id}:
+    get:
+      tags:
+      - "Shipment Tracking"
+      summary: "Retrieve tracking details of a shipment by tracking id"
+      operationId: "getShipmentTrackingByTrackingId"
+      consumes: []
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Id of the shipment that needs to be fetched"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ShipmentTracking"
+        400:
+          description: "Bad format request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Not authenticated"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/Error"
+    patch:
+      tags:
+      - "Shipment Tracking"
+      summary: "updates ShipmentTracking"
+      operationId: "patchShipmentTrackingUsingPATCH"
+      parameters:
+      - in: "body"
+        name: "ShipmentTracking"
+        description: "ShipmentTracking"
+        required: true
+        schema:
+          $ref: "#/definitions/ShipmentTracking"
+      - name: "fields"
+        in: "query"
+        description: "list of fields that needs to be changed in PATCH method"
+        required: true
+        type: "string"
+      - name: "id"
+        in: "path"
+        description: "id"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "ShipmentTracking updated successfully"
+          schema:
+            $ref: "#/definitions/ShipmentTracking"
+        400:
+          description: "Bad format request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Not authenticated"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/Error"
+securityDefinitions:
+  accessToken:
+    description: "Access token in JWT or opaque format sent in HTTP Authorization\
+      \ header, Bearer schema"
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+  apiKey:
+    description: "API key for technical accounts (opaque format) sent in HTTP Authorization\
+      \ header, no schema"
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+definitions:
+  Address:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of the address"
+      streetNr:
+        type: "string"
+        description: "Number identifying a specific property on a public street. It\
+          \ may be combined with streetNrLast for ranged addresses"
+      streetName:
+        type: "string"
+        description: "Name of the street or other street type"
+      streetSuffix:
+        type: "string"
+        description: "A modifier denoting a relative direction"
+      postcode:
+        type: "string"
+        description: "Descriptor for a postal delivery area, used to speed and simplify\
+          \ the delivery of mail (also known as zipcode)"
+      city:
+        type: "string"
+        description: "City that the address is in"
+      country:
+        type: "string"
+        description: "Country(ISO 3166-1 alpha-3 digit code) that the address is in"
+    title: "Address"
+    description: "Structured textual way of describing how to find a Property in an\
+      \ urban area (country properties are often defined differently)."
+  CustomerRefType:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Customer ID"
+      href:
+        type: "string"
+        description: "Resource URI"
+      name:
+        type: "string"
+        description: "Customer name"
+      description:
+        type: "string"
+        description: "Customer description"
+    title: "CustomerRefType"
+    description: "Related customer on shipment tracking"
+  Error:
+    type: "object"
+    required:
+    - "code"
+    - "id"
+    - "timestamp"
+    properties:
+      id:
+        type: "string"
+        description: "Unique error ID, used for logging purposes, UUID format"
+      code:
+        type: "string"
+        description: "A string coding the error type. This is given to caller so he\
+          \ can translate them if required."
+      timestamp:
+        type: "string"
+        format: "date-time"
+        description: "Exact time of error"
+      message:
+        type: "string"
+        description: "A short localized string that describes the error."
+      severity:
+        type: "string"
+        description: "Describes severity of error. Order from most to least critical\
+          \ is: FATAL, ERROR, WARN, INFO, DEBUG, TRACE\n* `FATAL` Designates very\
+          \ severe error events that will presumably lead the application to abort.\
+          \  \n* `ERROR` Designates error events that might still allow the application\
+          \ to continue running.  \n* `WARN` Designates potentially harmful situations.\
+          \  \n* `INFO` Designates informational messages that highlight the progress\
+          \ of the application at coarse-grained level.  \n* `DEBUG` Designates fine-grained\
+          \ informational events that are most useful to debug an application.  \n\
+          * `TRACE` Designates finer-grained informational events than the DEBUG. "
+        enum:
+        - "FATAL"
+        - "ERROR"
+        - "WARN"
+        - "INFO"
+        - "DEBUG"
+        - "TRACE"
+      details:
+        type: "array"
+        description: "Exception detailed info"
+        items:
+          type: "object"
+          properties: {}
+    title: "Error"
+    description: "Default error message template"
+  OrderRefType:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of the order"
+      href:
+        type: "string"
+        description: "URI where to query or perform actions on the order"
+      name:
+        type: "string"
+        description: "Screen name of the order"
+      referredType:
+        type: "string"
+        description: "Type of the referred order in case it is polymorphic"
+    title: "OrderRefType"
+    description: "Reference to an order that can typically be queried with another\
+      \ API"
+  ShipmentTracking:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of the shipment"
+      carrier:
+        type: "string"
+        description: "Carrier that is performing the shipment"
+      trackingCode:
+        type: "string"
+        description: "Tracking code in the carrier network"
+      carrierTrackingUrl:
+        type: "string"
+        description: "URL to a public page provided by the carrier that shows tracking\
+          \ details for this tracker"
+      trackingDate:
+        type: "string"
+        format: "date-time"
+        description: "Date when the shipment began to be tracked"
+      status:
+        type: "string"
+        description: "Current status of the package  \n* `initialized` Package shipment\
+          \ is initialized  \n* `inProcess` Package packing is in process  \n* `processed`\
+          \ Package packing was processed  \n* `shipped` Pacakage is shipped  \n*\
+          \ `inCustoms` Pacakage is in customs  \n* `delivered` Pacakage is delivered\
+          \  \n* `returned` Pacakage is returned  \n* `error` Pacakage shipment status\
+          \ is undetermined  "
+        enum:
+        - "initialized"
+        - "inProcess"
+        - "processed"
+        - "shipped"
+        - "inCustoms"
+        - "delivered"
+        - "returned"
+        - "error"
+      statusChangeDate:
+        type: "string"
+        format: "date-time"
+        description: "Date when the tracking status last changed"
+      statusChangeReason:
+        type: "string"
+        description: "Text describing the reason for the status of the tracking"
+      weight:
+        type: "number"
+        format: "float"
+        description: "Weight of the package in grams"
+      estimatedDeliveryDate:
+        type: "string"
+        format: "date-time"
+        description: "Estimated deliveryDate"
+      addressFrom:
+        description: "Structured textual way of describing how to find a Property\
+          \ in an urban area (country properties are often defined differently)"
+        $ref: "#/definitions/Address"
+      addressTo:
+        description: "Structured textual way of describing how to find a Property\
+          \ in an urban area (country properties are often defined differently)"
+        $ref: "#/definitions/Address"
+      order:
+        type: "array"
+        description: "Orders that triggered this shipment"
+        items:
+          $ref: "#/definitions/OrderRefType"
+      relatedCustomer:
+        description: "Related customer on shipment tracking"
+        $ref: "#/definitions/CustomerRefType"
+      createDate:
+        type: "string"
+        format: "date-time"
+        description: "Date when tracking shipment was created"
+    title: "ShipmentTracking"
+    description: "Shipment Tracking Type"
+

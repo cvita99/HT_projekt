@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title><%= title %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/homesite.css">
+</head>
+
+<body>
+    <div class="header1">
+        <div class="text1">
+            <p>PRIVATNI</p>
+            <p>POSLOVNI</p>
+            <p>HT GRUPA</p>
+            <p>ZAPOŠLJAVAMO</p>
+        </div>
+        <div class="text2">
+            <p>PODRŠKA</p>
+            <p>MOJ TELEKOM</p>
+        </div>
+    </div>
+
+    <div class="header2">
+        <img src="/photos/T.png">
+        <p>SHIPMENTS</p>
+        <form action="/shipments" method="post">
+            <label for="sort">Sort by:</label>
+            <select name="sort" required>
+                <option value="id" >shipment id</option>
+                <option value="status" <%= sort == 'status' ? 'selected' : '' %>>status</option>
+                <option value="orderId" <%= sort == 'orderId' ? 'selected' : '' %>>order id</option>
+                <option value="customerId" <%= sort == 'customerId' ? 'selected' : '' %>>customer id</option>
+            </select>
+            <input type="text" name="orderId" placeholder="order id" value = <%= orderId_search ? orderId_search : '' %>>
+            <input type="text" name="status" placeholder="status" value = <%= status_search ? status_search : '' %>>
+            <input type="text" name="customerId" placeholder="customer id" value= <%= customerId_search ? customerId_search : '' %>>
+            <button type="submit">
+                <i class="fas fa-search"></i>
+            </button>
+            
+        </form>
+    </div>
+
+    <div class="header3">
+        <h1>Shipment tracking</h1>
+        <button><a href="/shipments/add">Add shipment</a></button>
+
+    </div>
+
+    <div class="container" id="container">
+        <div class="podaci">ID</div>
+        <div class="podaci">Carrier</div>
+        <div class="podaci">Status</div>
+        <div class="podaci">Order</div>
+        <div class="podaci">Delivery Date</div>
+        <div class="podaci">Address From</div>
+        <div class="podaci">Address To</div>
+        <div class="podaci">Customer</div>
+        <div class="podaci"></div>
+        
+      
+        <% for (let i = 0; (i < 10) && (i < shipments.length); i++) {
+            let shipment = shipments[i] %>
+            <div class="row">
+                <div class="cell"><%=shipment.id %></div>
+                <div class="cell"><%=shipment.carrier %></div>
+                <div class="cell"><%=shipment.status %></div>
+                <div class="cell"><%=shipment.order %></div>
+                <div class="cell"><%=shipment.estimatedDeliveryDate %></div>
+                <div class="cell"><%=shipment.addressFrom %></div>
+                <div class="cell"><%=shipment.addressTo %></div>
+                <div class="cell"><%=shipment.relatedCustomer %></div>
+                <button class="buttoncell"><a href="/shipments/<%= shipment.id %>">update</a></button>
+            </div>
+        <% } %>
+        
+       
+    </div>
+
+    <div class="gumb_page">
+        <% for(let i = 0; i < Math.ceil(shipments.length / 10); i++) { %>
+            <button onclick="renderData(<%= i %>)">Page <%= i + 1 %></button>
+        <% } %>
+    </div>
+</body>
+
+<script>
+    const shipments = <%- JSON.stringify(shipments) %>;
+    function renderData(page) {
+        var cont = document.getElementById("container");
+        cont.innerHTML = "";
+        const newContent = `
+                <div class="podaci">ID</div>
+                <div class="podaci">Carrier</div>
+                <div class="podaci">Status</div>
+                <div class="podaci">Order</div>
+                <div class="podaci">Delivery Date</div>
+                <div class="podaci">Address From</div>
+                <div class="podaci">Address To</div>
+                <div class="podaci">Customer</div>
+                <div class="podaci"></div>`;
+        container.insertAdjacentHTML('beforeend', newContent);
+        for (let i = 10 * page; (i < 10 * (page+1)) && (i < shipments.length); i++) {
+                const shipment = shipments[i];
+                const row = document.createElement('div');
+                row.className = 'row';
+                row.innerHTML = `
+                    <div class="cell">${shipment.id.toString()}</div>
+                    <div class="cell">${shipment.carrier}</div>
+                    <div class="cell">${shipment.status}</div>
+                    <div class="cell">${shipment.order.id}, ${shipment.order.name}</div>
+                    <div class="cell">${shipment.estimatedDeliveryDate}</div>
+                    <div class="cell">${shipment.addressFrom.streetName} ${shipment.addressFrom.streetSuffix} ${shipment.addressFrom.streetNr}, ${shipment.addressFrom.city}</div>
+            <div class="cell">${shipment.addressTo.streetName} ${shipment.addressTo.streetSuffix} ${shipment.addressTo.streetNr}, ${shipment.addressTo.city}</div>
+                    <div class="cell">${shipment.relatedCustomer.id}, ${shipment.relatedCustomer.name}</div>
+                    <button class="buttoncell"><a href="/shipments/${shipment.id}">update</a></button>
+                `;
+                cont.appendChild(row);
+            }
+    
+        }
+</script>
+
+</html>
+
